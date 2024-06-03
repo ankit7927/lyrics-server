@@ -1,0 +1,98 @@
+{% extends 'base.html' %}
+{% load static %}
+
+
+{% block meta %}
+<meta name="keywords"
+    content="{{lyrics.name}} lyrics, {{lyrics.album}} songs lyrics, {% for sing in lyrics.singer.all %} {{sing}} lyrics, {% endfor %}">
+{% endblock %}
+
+{% block head %}
+<title>{{lyrics.name}} - Lyrics App</title>
+<meta name="description"
+    content="{{lyrics.name}} song is sung by {% for sing in lyrics.singer.all %}{{sing}}, {% endfor %}from album {{lyrics.album}} and lyrics written by {{lyrics.writer}}.">
+{% endblock %}
+
+{% block content %}
+<main>
+    <div class="text-center bg-image" style="background-image: url('{{lyrics.thumbnail}}'); height: 270px;">
+        <div class="mask" style="background-color: rgba(0, 0, 0, 0.5);">
+            <div class="d-flex justify-content-center align-items-center h-100">
+                <div class="text-white">
+                    <h1 class="h1 display-3 fw-bold">{{lyrics.name}} Song Lyrics</h1>
+                    <p>{% for sing in lyrics.singer.all %} {{sing}} {% endfor %}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="container py-4">
+        <div class="row">
+            <section class="col-md-8 text-center">
+                <h4 class="h4">{{lyrics.name}} - {{lyrics.album}} </h4>
+                <div class="py-3 ">
+                    {{ lyrics.lyrics | safe }}
+                </div>
+            </section>
+
+            <section class="col-md-4">
+                <div class="card mb-4">
+                    <div class="card-body">
+                        <h5 class="card-title">Song Information</h5>
+                        <hr />
+                        <p class="card-text"><strong>Song :</strong> {{lyrics.name}}</p>
+                        <p class="card-text"><strong>Album :</strong> <a
+                                href="/?album={{lyrics.album}}">{{lyrics.album}}</a></p>
+                        <p class="card-text"><strong>Music :</strong> {{lyrics.music}}</p>
+                        <p class="card-text">
+                            <strong>Lyrics :</strong> {% for lyric in lyrics.writer.all %} <a
+                                href="/?writer={{lyric}}">{{lyric}} </a> {% endfor %}
+                        </p>
+                        <p class="card-text">
+                            <strong>Singer :</strong> {% for sing in lyrics.singer.all %} <a
+                                href="/?singer={{sing}}">{{sing}} </a> {% endfor %}
+                        </p>
+                    </div>
+                </div>
+
+                {% if album_songs %}
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">More Songs from {{lyrics.album}}</h5>
+                        <ul class="list-group list-group-light">
+                            {% for song in album_songs %}
+                            <a class="list-group-item list-group-item-action px-3 border-0" href="/lyric/{{song.slug}}">
+                                <div>
+                                    <div class="fw-bold">{{song.name}}</div>
+                                    <div class="text-muted">{% for sing in lyrics.singer.all %} {{sing}} {% endfor %}
+                                    </div>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+                {% if singer_songs %}
+                <div class="card mt-4">
+                    <div class="card-body">
+                        <h5 class="card-title">More Songs By Singer</h5>
+                        <ul class="list-group list-group-light">
+                            {% for song in singer_songs %}
+                            <a class="list-group-item list-group-item-action px-3 border-0"
+                                href="/lyrics/{{song.slug}}">
+                                <div>
+                                    <div class="fw-bold">{{song.name}}</div>
+                                    <div class="text-muted">{{song.album}}</div>
+                                </div>
+                            </a>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+                {% endif %}
+            </section>
+        </div>
+    </div>
+</main>
+{% endblock %}

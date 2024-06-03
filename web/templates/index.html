@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<main>
+    <div class="container">
+        <div class="row row-cols-2 row-cols-md-5 g-3 mt-2">
+            {% for song in songs %}
+            <div class="col h-100">
+                <div class="bg-image ripple shadow-4-soft rounded-6 overflow-hiddend-block" data-ripple-color="light">
+                    <img loading="lazy" src="{{song.thumbnail}}" class="w-100" alt="{{song.name}} song lyrics" />
+                    <a href="/lyrics/{{song.slug}}">
+                        <div class="mask">
+                            <div class="d-flex justify-content-start align-items-end h-100 p-3">
+                                <span class="badge badge-primary me-2">{{song.name}}</span>
+                            </div>
+                        </div>
+                        <div class="hover-overlay">
+                            <div class="mask" style="background-color: hsla(0, 0%, 98.4%, 0.15)"></div>
+                        </div>
+                    </a>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        
+        <nav aria-label="pagination" class="py-5">
+            <ul class="pagination justify-content-center">
+
+                {% if songs.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">First</a>
+                </li>
+
+                <li class="page-item">
+                    <a class="page-link" href="?page={{songs.previous_page_number}}">{{songs.previous_page_number}}</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link">First</a>
+                </li>
+                {% endif %}
+
+                <li class="page-item active" aria-current="page">
+                    <span class="page-link">
+                        {{songs.number}} / {{songs.paginator.num_pages}}
+                        <span class="visually-hidden">(current)</span>
+                    </span>
+                </li>
+
+                {% if songs.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{songs.next_page_number}}">{{songs.next_page_number}}</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{songs.paginator.num_pages}}">Last {{songs.paginator.num_pages}}</a>
+                </li>
+                {% else %}
+                <li class="page-item disabled">
+                    <a class="page-link">Last</a>
+                </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</main>
+{% endblock %}
