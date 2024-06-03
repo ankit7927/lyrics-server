@@ -30,7 +30,7 @@ class SongModel(models.Model):
     singer = models.ManyToManyField(SingerModel, blank=True)
     writer = models.ManyToManyField(WriterModel, blank=True)
     music = models.CharField(max_length=80, null=True, blank=True)
-    thumbnail = models.CharField(max_length=256, null=True, blank=True, default="https://www.churchmotiongraphics.com/wp-content/uploads/2018/01/WorshipBackground.jpg")
+    thumbnail = models.CharField(max_length=256, default="https://www.churchmotiongraphics.com/wp-content/uploads/2018/01/WorshipBackground.jpg")
     lyrics = models.TextField()
     ytvid = models.CharField(max_length=20, null=True, blank=True)
     slug = models.SlugField(max_length=80, null=True, unique=True)
