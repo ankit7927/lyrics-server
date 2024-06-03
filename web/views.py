@@ -8,18 +8,17 @@ def index(request, singer=None, album=None):
     singer=request.GET.get("singer", None)
     album=request.GET.get("album", None)
     writer=request.GET.get("writer", None)
+
     songs_data = None
 
-    print(album)
-
     if singer:
-        songs_data = songs.get_singer_song(singer_name=singer)
+        songs_data = songs.get_singer_song(singer_name=singer).order_by("created")
     if album:
-        songs_data = songs.get_album_song(album_name=album)
+        songs_data = songs.get_album_song(album_name=album).order_by("created")
     if writer:
-        songs_data = songs.get_writer_song(writer_name=writer)
+        songs_data = songs.get_writer_song(writer_name=writer).order_by("created")
     if songs_data is None: 
-        songs_data = songs.get_all_songs().values("name", "thumbnail", "slug")
+        songs_data = songs.get_all_songs().values("name", "thumbnail", "slug").order_by("created")
 
     paginator = Paginator(object_list=songs_data, per_page=25)
     page_songs_data = paginator.get_page(1 if request.GET.get("page") is None else request.GET.get("page"))
