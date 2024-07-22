@@ -11,9 +11,9 @@ from serializer.singer import SingerSerializer, SingerBasicSerializer
 
 @api_view(["GET"])
 def get_home_content(request):
-    latest = songs.get_all_songs()
-    singer = singers.get_all_singer()
-    popular = songs.get_latest_songs()
+    latest = songs.get_latest_songs()[:12]
+    singer = singers.get_all_singer()[:8]
+    popular = songs.get_all_songs()[:5]
 
     response = {
         "latestSongs" : SongBasicSerializer(instance=latest, many=True).data,

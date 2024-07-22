@@ -75,7 +75,7 @@ def delete_song(id:int):
 
 
 def get_latest_songs():
-    songs = SongModel.objects.order_by("created")
+    return SongModel.objects.order_by("created")[:10]
 
 
 def search_song(query:str):
