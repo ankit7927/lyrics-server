@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from core.models import WriterModel
+from app.models import WriterModel
 
 class WriterSerializer(serializers.ModelSerializer):
     class Meta:

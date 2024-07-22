@@ -2,7 +2,7 @@ from rest_framework import serializers
 from .singer import SingerBasicSerializer
 from .writer import WriterBasicSerializer
 from .album import AlbumBasicSerializer
-from core.models import SongModel
+from app.models import SongModel
 
 class SongSerializer(serializers.ModelSerializer):
     singer = SingerBasicSerializer(read_only=True, many=True)
