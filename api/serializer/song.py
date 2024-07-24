@@ -15,6 +15,7 @@ class SongSerializer(serializers.ModelSerializer):
 
 
 class SongBasicSerializer(serializers.ModelSerializer):
+    album = AlbumBasicSerializer(read_only=True)
     class Meta:
         model = SongModel
         fields = ["id", "name", "album", "thumbnail"]
