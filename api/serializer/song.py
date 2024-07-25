@@ -1,13 +1,13 @@
 from rest_framework import serializers
-from .singer import SingerBasicSerializer
-from .writer import WriterBasicSerializer
+from .artist import ArtistBasicSerializer
 from .album import AlbumBasicSerializer
+from .artist import ArtistBasicSerializer
 from app.models import SongModel
 
 class SongSerializer(serializers.ModelSerializer):
-    singer = SingerBasicSerializer(read_only=True, many=True)
+    singer = ArtistBasicSerializer(read_only=True, many=True)
     album = AlbumBasicSerializer(read_only=True)
-    writer = WriterBasicSerializer(read_only=True, many=True)
+    artist = ArtistBasicSerializer(read_only=True, many=True)
 
     class Meta:
         model = SongModel

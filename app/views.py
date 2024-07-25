@@ -1,21 +1,19 @@
 from django.shortcuts import render, redirect
 from django.core.paginator import Paginator
 from django.db.models import Q
-from .models import SongModel, SingerModel, WriterModel
+from .models import SongModel, ArtistModel
 
-def index(request, singer=None, album=None):
-    singer=request.GET.get("singer", None)
+def index(request, artist=None, album=None):
+    artist=request.GET.get("artist", None)
     album=request.GET.get("album", None)
-    writer=request.GET.get("writer", None)
 
     songs_data = None
 
-    if singer:
-        songs_data = SongModel.objects.filter(singer__name=singer)
+    if artist:
+        songs_data = SongModel.objects.filter(artist__name=artist).order_by("created")
     if album:
-        songs_data = SongModel.objects.filter(album__name=album)
-    if writer:
-        songs_data = SongModel.objects.filter(writer__name=writer)
+        songs_data = SongModel.objects.filter(album__name=album).order_by("created")
+
     if songs_data is None: 
         songs_data = SongModel.objects.all().values("name", "thumbnail", "slug").order_by("created")
 
@@ -30,28 +28,19 @@ def song_lyrics(request, slug):
         song_data = SongModel.objects.get(slug=slug)
 
         album_songs = SongModel.objects.filter(album__id=song_data.album.id).exclude(id=song_data.id)[:5]
-        singers_songs = SongModel.objects.filter(singer__in=song_data.singer.all()).distinct().exclude(id=song_data.id)[:5]
-        writers_songs = SongModel.objects.filter(writer__in=song_data.writer.all()).exclude(id=song_data.id)[:5]
+        artists_songs = SongModel.objects.filter(artist__in=song_data.artist.all()).distinct().exclude(id=song_data.id)[:5]
 
-        return render(request=request, template_name="lyrics.html", context={"lyrics":song_data, "singer_songs":singers_songs, "album_songs":album_songs, "writer_songs":writers_songs})
+        return render(request=request, template_name="lyrics.html", context={"lyrics":song_data, "artist_songs":artists_songs, "album_songs":album_songs})
     except Exception as e:
         print(e)
         return render(request=request, template_name="notfound.html")
     
-def all_singers(request):
-    singers_data = SingerModel.objects.all()
-    paginator = Paginator(object_list=singers_data, per_page=25)
-    page_singers = paginator.get_page(1 if request.GET.get("page") is None else request.GET.get("page"))
+def all_artists(request):
+    artist_data = ArtistModel.objects.all().order_by("name")
+    paginator = Paginator(object_list=artist_data, per_page=25)
+    page_artists = paginator.get_page(1 if request.GET.get("page") is None else request.GET.get("page"))
 
-    return render(request=request, template_name="singers.html", context={"singers":page_singers})
-
-
-def all_writers(request):
-    writers_data = WriterModel.objects.all()
-    paginator = Paginator(object_list=writers_data, per_page=25)
-    page_writers = paginator.get_page(1 if request.GET.get("page") is None else request.GET.get("page"))
-
-    return render(request=request, template_name="writers.html", context={"writers":page_writers})
+    return render(request=request, template_name="artists.html", context={"artists":page_artists})
 
 def search(request):
     query=request.GET.get("query", None)

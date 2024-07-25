@@ -5,20 +5,20 @@
 <main>
     <div class="container">
         <div class="row mt-4">
-            {% for singer in singers %}
+            {% for artist in artists %}
             <div class="col-xl-4 col-lg-6 mb-4">
                 <div class="card">
                     <div class="card-body">
-                        <a href="/?singer={{singer.name}}" class="text-decoration-none">
+                        <a href="/?artist={{artist.name}}" class="text-decoration-none">
                             <div class="d-flex align-items-top">
-                                {% if singer.image %}
-                                <img src="{{singer.image}}"
-                                    alt="{{singer.name}}" style="width: 100px; height: 100px" class="rounded-6" />
+                                {% if artist.image %}
+                                <img src="{{artist.image}}"
+                                    alt="{{artist.name}}" style="width: 100px; height: 100px" class="rounded-6" />
                                 {% endif %}
                                 <div class="ms-3">
-                                    <h5 class="fw-bold mb-1">{{singer.name}}</h5>
-                                    {% if singer.description %}
-                                        <p class="text-muted mb-0">{{singer.description | truncatewords:10}}</p>                                    
+                                    <h5 class="fw-bold mb-1">{{artist.name}}</h5>
+                                    {% if artist.description %}
+                                        <p class="text-muted mb-0">{{artist.description | truncatewords:10}}</p>                                    
                                     {% endif %}
                                 </div>
                             </div>
@@ -32,13 +32,13 @@
         <nav aria-label="pagination" class="py-5">
             <ul class="pagination justify-content-center">
 
-                {% if singers.has_previous %}
+                {% if artists.has_previous %}
                 <li class="page-item">
                     <a class="page-link" href="?page=1">First</a>
                 </li>
 
                 <li class="page-item">
-                    <a class="page-link" href="?page={{singers.previous_page_number}}">{{singers.previous_page_number}}</a>
+                    <a class="page-link" href="?page={{artists.previous_page_number}}">{{artists.previous_page_number}}</a>
                 </li>
                 {% else %}
                 <li class="page-item disabled">
@@ -48,18 +48,18 @@
 
                 <li class="page-item active" aria-current="page">
                     <span class="page-link">
-                        {{singers.number}} / {{singers.paginator.num_pages}}
+                        {{artists.number}} / {{artists.paginator.num_pages}}
                         <span class="visually-hidden">(current)</span>
                     </span>
                 </li>
 
-                {% if singers.has_next %}
+                {% if artists.has_next %}
                 <li class="page-item">
-                    <a class="page-link" href="?page={{singers.next_page_number}}">{{singers.next_page_number}}</a>
+                    <a class="page-link" href="?page={{artists.next_page_number}}">{{artists.next_page_number}}</a>
                 </li>
                 <li class="page-item">
-                    <a class="page-link" href="?page={{singers.paginator.num_pages}}">Last
-                        {{singers.paginator.num_pages}}</a>
+                    <a class="page-link" href="?page={{artists.paginator.num_pages}}">Last
+                        {{artists.paginator.num_pages}}</a>
                 </li>
                 {% else %}
                 <li class="page-item disabled">

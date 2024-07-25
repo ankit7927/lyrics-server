@@ -4,13 +4,13 @@
 
 {% block meta %}
 <meta name="keywords"
-    content="{{lyrics.name}} lyrics, {{lyrics.album}} songs lyrics, {% for sing in lyrics.singer.all %} {{sing}} lyrics, {% endfor %}">
+    content="{{lyrics.name}} lyrics, {{lyrics.album}} songs lyrics, {% for sing in lyrics.artist.all %} {{sing}} lyrics, {% endfor %}">
 {% endblock %}
 
 {% block head %}
-<title>{{lyrics.name}} - Lyrics App</title>
+<title>{{lyrics.name}} - {{lyrics.album}}</title>
 <meta name="description"
-    content="{{lyrics.name}} song is sung by {% for sing in lyrics.singer.all %}{{sing}}, {% endfor %}from album {{lyrics.album}} and lyrics written by {{lyrics.writer}}.">
+    content="{{lyrics.name}} song is sung by {% for sing in lyrics.artist.all %}{{sing}}, {% endfor %}from album {{lyrics.album}} and lyrics written by {{lyrics.writer}}.">
 {% endblock %}
 
 {% block content %}
@@ -20,7 +20,7 @@
             <div class="d-flex justify-content-center align-items-center h-100">
                 <div class="text-white">
                     <h1 class="h1 display-3 fw-bold">{{lyrics.name}} Song Lyrics</h1>
-                    <p>{% for sing in lyrics.singer.all %} {{sing}} {% endfor %}</p>
+                    <p>{% for sing in lyrics.artist.all %} {{sing}} {% endfor %}</p>
                 </div>
             </div>
         </div>
@@ -45,12 +45,8 @@
                                 href="/?album={{lyrics.album}}">{{lyrics.album}}</a></p>
                         <p class="card-text"><strong>Music :</strong> {{lyrics.music}}</p>
                         <p class="card-text">
-                            <strong>Lyrics :</strong> {% for lyric in lyrics.writer.all %} <a
-                                href="/?writer={{lyric}}">{{lyric}} </a> {% endfor %}
-                        </p>
-                        <p class="card-text">
-                            <strong>Singer :</strong> {% for sing in lyrics.singer.all %} <a
-                                href="/?singer={{sing}}">{{sing}} </a> {% endfor %}
+                            <strong>artist :</strong> {% for sing in lyrics.artist.all %} <a
+                                href="/?artist={{sing}}">{{sing}} </a> {% endfor %}
                         </p>
                     </div>
                 </div>
@@ -64,7 +60,7 @@
                             <a class="list-group-item list-group-item-action px-3 border-0" href="/lyric/{{song.slug}}">
                                 <div>
                                     <div class="fw-bold">{{song.name}}</div>
-                                    <div class="text-muted">{% for sing in lyrics.singer.all %} {{sing}} {% endfor %}
+                                    <div class="text-muted">{% for sing in lyrics.artist.all %} {{sing}} {% endfor %}
                                     </div>
                                 </div>
                             </a>
@@ -73,12 +69,12 @@
                     </div>
                 </div>
                 {% endif %}
-                {% if singer_songs %}
+                {% if artist_songs %}
                 <div class="card mt-4">
                     <div class="card-body">
-                        <h5 class="card-title">More Songs By Singer</h5>
+                        <h5 class="card-title">More Songs By artist</h5>
                         <ul class="list-group list-group-light">
-                            {% for song in singer_songs %}
+                            {% for song in artist_songs %}
                             <a class="list-group-item list-group-item-action px-3 border-0"
                                 href="/lyrics/{{song.slug}}">
                                 <div>

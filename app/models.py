@@ -1,22 +1,15 @@
 from django.db import models
 
+class ArtistModel(models.Model):
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField(null=True, blank=True)
+    image = models.CharField(max_length=256, default="/static/artist-image-notfound.jpg")
+
+    def __str__(self) -> str:
+        return self.name
+    
+
 class AlbumModel(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    description = models.TextField(null=True, blank=True)
-    image = models.CharField(max_length=256, null=True, blank=True)
-
-    def __str__(self) -> str:
-        return self.name
-
-class SingerModel(models.Model):
-    name = models.CharField(max_length=100, unique=True)
-    description = models.TextField(null=True, blank=True)
-    image = models.CharField(max_length=256, null=True, blank=True)
-
-    def __str__(self) -> str:
-        return self.name
-
-class WriterModel(models.Model):
     name = models.CharField(max_length=100, unique=True)
     description = models.TextField(null=True, blank=True)
     image = models.CharField(max_length=256, null=True, blank=True)
@@ -27,10 +20,9 @@ class WriterModel(models.Model):
 class SongModel(models.Model):
     name = models.CharField(max_length=40)
     album = models.ForeignKey(AlbumModel, null=True, blank=True, on_delete=models.DO_NOTHING)
-    singer = models.ManyToManyField(SingerModel, blank=True)
-    writer = models.ManyToManyField(WriterModel, blank=True)
+    artist = models.ManyToManyField(ArtistModel, blank=True)
     music = models.CharField(max_length=80, null=True, blank=True)
-    thumbnail = models.CharField(max_length=256, default="https://www.churchmotiongraphics.com/wp-content/uploads/2018/01/WorshipBackground.jpg")
+    thumbnail = models.CharField(max_length=256, default="/static/song-thumbnail-notfound.png")
     lyrics = models.TextField()
     ytvid = models.CharField(max_length=20, null=True, blank=True)
     slug = models.SlugField(max_length=80, null=True, unique=True)
