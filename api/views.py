@@ -2,8 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from app.models import SongModel, AlbumModel, ArtistModel
-from .serializer.song import SongBasicSerializer, SongSerializer
-from .serializer.artist import ArtistBasicSerializer
+from .serializers import SongBasicSerializer, SongSerializer, ArtistBasicSerializer
 import datetime
 
 @api_view(http_method_names=["GET"])
