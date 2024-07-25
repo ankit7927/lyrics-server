@@ -7,9 +7,9 @@ import datetime
 
 @api_view(http_method_names=["GET"])
 def home_feed(request):
-    top_songs = SongModel.objects.all()[:5]
-    latest_song = SongModel.objects.all()[6:14]
-    artists = SongModel.objects.all()[:6]
+    top_songs = SongModel.objects.all()[:7]
+    latest_song = SongModel.objects.all()[7:21]
+    artists = SongModel.objects.all()[:9]
 
     response = {
         "popular": SongBasicSerializer(instance=top_songs, many=True).data,
@@ -51,8 +51,11 @@ def create_song(request):
         created = datetime.datetime.fromisoformat(song_data["publish"]),
         album = alb)
 
-    if song_data["thumbnail"] != "":
+    if song_data["thumbnail"] == "":
+        new_song.thumbnail = request.build_absolute_uri("/static/song-thumbnail-notfound.png")
+    else:
         new_song.thumbnail = song_data["thumbnail"]
+
     new_song.artist.set(artists)
     new_song.save()
         
