@@ -14,6 +14,7 @@ collection_urlpatterns = [
 urlpatterns = [
     path("song/", include(song_urlpatterns)),
     path("coll/", include(collection_urlpatterns)),
-    path("home-feed", view=views.home_feed), 
+    path("home-feed", view=views.home_feed),
+    path("search", view=views.search_song),
 ]
 

@@ -2,6 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from django.http import HttpRequest
+from django.db.models import Q
 from app.models import SongModel, AlbumModel, ArtistModel, CollectionModel
 from .serializers import SongBasicSerializer, SongSerializer, ArtistBasicSerializer, CollectionBasicSerializer, CollectionSerializer
 import datetime
@@ -73,3 +74,20 @@ def collection_by_id(request:HttpRequest, id:int):
     collection = CollectionModel.objects.get(id=id)
     coll_ser = CollectionSerializer(instance=collection)
     return Response(data=coll_ser.data)
+
+@api_view(http_method_names=["GET"])
+def search_song(request:HttpRequest):
+    query = request.GET["query"]
+    if query == "":
+        return Response(status=status.HTTP_204_NO_CONTENT)
+    
+    result = SongModel.objects.filter(
+        Q(name__icontains=query) |
+        Q(lyrics__icontains=query)
+    ).order_by("name")
+
+    result_ser = SongBasicSerializer(instance=result, many=True)
+    return Response(data=result_ser.data)
+
+
+
