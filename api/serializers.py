@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from app.models import AlbumModel, ArtistModel, SongModel
+from app.models import AlbumModel, ArtistModel, SongModel, CollectionModel
 
 class AlbumSerializer(serializers.ModelSerializer):
     class Meta:
@@ -19,7 +19,7 @@ class ArtistSerializer(serializers.ModelSerializer):
 class ArtistBasicSerializer(serializers.ModelSerializer):
     class Meta:
         model = ArtistModel
-        fields = ["id", "name", "image"]
+        fields = ["id", "name"]
 
 class SongSerializer(serializers.ModelSerializer):
     album = AlbumBasicSerializer(read_only=True)
@@ -34,3 +34,14 @@ class SongBasicSerializer(serializers.ModelSerializer):
     class Meta:
         model = SongModel
         fields = ["id", "name", "album", "thumbnail"]
+
+class CollectionSerializer(serializers.ModelSerializer):
+    songs = SongBasicSerializer(read_only=True, many=True)
+    class Meta:
+        model = CollectionModel
+        fields = "__all__"
+
+class CollectionBasicSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CollectionModel
+        fields = ["id", "name", "thumbnail"]

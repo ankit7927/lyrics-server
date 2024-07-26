@@ -1,26 +1,27 @@
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from app.models import SongModel, AlbumModel, ArtistModel
-from .serializers import SongBasicSerializer, SongSerializer, ArtistBasicSerializer
+from django.http import HttpRequest
+from app.models import SongModel, AlbumModel, ArtistModel, CollectionModel
+from .serializers import SongBasicSerializer, SongSerializer, ArtistBasicSerializer, CollectionBasicSerializer, CollectionSerializer
 import datetime
 
 @api_view(http_method_names=["GET"])
-def home_feed(request):
-    top_songs = SongModel.objects.all()[:7]
-    latest_song = SongModel.objects.all()[7:21]
-    artists = SongModel.objects.all()[:9]
+def home_feed(request:HttpRequest):
+    popular_songs = SongModel.objects.all()[:7]
+    latest_songs = SongModel.objects.all()[7:21]
+    collections = CollectionModel.objects.all()[:4]
 
     response = {
-        "popular": SongBasicSerializer(instance=top_songs, many=True).data,
-        "latest": SongBasicSerializer(instance=latest_song, many=True).data,
-        "artist": ArtistBasicSerializer(instance=artists, many=True).data
+        "popular": SongBasicSerializer(instance=popular_songs, many=True).data,
+        "latest": SongBasicSerializer(instance=latest_songs, many=True).data,
+        "collections": CollectionBasicSerializer(instance=collections, many=True).data
     }
 
     return Response(data=response)
 
 @api_view(http_method_names=["GET"])
-def song_by_id(request, id):
+def song_by_id(request:HttpRequest, id):
     if id == "" : return Response(data={"error":"id is not provided"}, status=status.HTTP_400_BAD_REQUEST)
     try:
         song = SongModel.objects.get(id=id)
@@ -31,7 +32,7 @@ def song_by_id(request, id):
         return Response(data={"error":"something wrong"}, status=status.HTTP_503_SERVICE_UNAVAILABLE)
     
 @api_view(http_method_names=["POST"])
-def create_song(request):
+def create_song(request:HttpRequest):
     song_data = request.data
 
     if song_data["album"]:
@@ -61,3 +62,14 @@ def create_song(request):
         
     return Response(data={"message":"song created"})
 
+@api_view(http_method_names=["GET"])
+def all_collections(request:HttpRequest):
+    collections = CollectionModel.objects.all()
+    coll_ser = CollectionBasicSerializer(instance=collections, many=True)
+    return Response(data=coll_ser.data)
+
+@api_view(http_method_names=["GET"])
+def collection_by_id(request:HttpRequest, id:int):
+    collection = CollectionModel.objects.get(id=id)
+    coll_ser = CollectionSerializer(instance=collection)
+    return Response(data=coll_ser.data)

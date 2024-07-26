@@ -30,3 +30,11 @@ class SongModel(models.Model):
     def __str__(self) -> str:
         return self.name
 
+class CollectionModel(models.Model):
+    name = models.CharField(max_length=40)
+    description = models.TextField(null=True, blank=True)
+    thumbnail = models.CharField(max_length=256)
+    songs = models.ManyToManyField(to=SongModel)
+
+    def __str__(self) -> str:
+        return self.name
