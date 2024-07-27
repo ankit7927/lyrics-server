@@ -1,11 +1,14 @@
 from pathlib import Path
 import os
+from dotenv import load_dotenv
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+env_path = load_dotenv(os.path.join(BASE_DIR, ".env"))
+load_dotenv(env_path)
 
-SECRET_KEY = "diufdhdsafiuhdsfd"
+SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
 
-DEBUG = True
+DEBUG = os.environ.get("DJANGO_DEBUG", "") != "False"
 
 ALLOWED_HOSTS = ["*"]
 
@@ -20,6 +23,9 @@ INSTALLED_APPS = [
     'api',
 ]
 
+SECURE_SSL_REDIRECT = False  #this setting will redirect all http request to https
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -35,7 +41,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [ os.path.join(BASE_DIR, "web/templates") ],
+        'DIRS': [ os.path.join(BASE_DIR, "app/templates") ],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -52,8 +58,12 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.environ.get("DB_NAME"),
+        'USER': os.environ.get("DB_USER"),
+        'PASSWORD': os.environ.get("DB_PASS"),
+        'HOST': os.environ.get("DB_HOST"),
+        'PORT': os.environ.get("DB_PORT"),
     }
 }
 
@@ -80,6 +90,7 @@ USE_I18N = True
 
 USE_TZ = True
 
+STATIC_ROOT = 'static'
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "app/static"
