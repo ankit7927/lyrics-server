@@ -1,4 +1,4 @@
-"""Gunicorn *development* config file"""
+"""Gunicorn *production* config file"""
 
 # Django WSGI application path in pattern MODULE_NAME:VARIABLE_NAME
 wsgi_app = "core.wsgi:application"
@@ -8,8 +8,6 @@ loglevel = "debug"
 workers = 2
 # The socket to bind
 bind = "0.0.0.0:8000"
-# Restart workers when code changes (development only!)
-reload = True
 # Write access and error info to /var/log
 accesslog = errorlog = "/var/log/gunicorn/dev.log"
 # Redirect stdout/stderr to log file
