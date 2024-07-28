@@ -1,16 +1,16 @@
 from pathlib import Path
-import os
 from dotenv import load_dotenv
+import os
 
 BASE_DIR = Path(__file__).resolve().parent.parent
-env_path = load_dotenv(os.path.join(BASE_DIR, ".env"))
-load_dotenv(env_path)
 
-SECRET_KEY = 'somelongsecrete'
+load_dotenv(BASE_DIR / ".env")
 
-DEBUG = True
+SECRET_KEY = os.getenv("SECRET_KEY")
 
-ALLOWED_HOSTS = ["*"]
+DEBUG = os.getenv("DEBUG") == "True"
+
+ALLOWED_HOSTS = ["localhost", "rockerlyrics.pythonanywhere.com"]
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -56,8 +56,12 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': os.getenv("DB_NAME"),
+        'USER': os.getenv("DB_USERNAME"),
+        'PASSWORD': os.getenv("DB_PASSWORD"), 
+        'HOST': os.getenv("DB_HOST"),
+        'PORT': os.getenv("DB_PORT")
     }
 }
 
@@ -84,7 +88,8 @@ USE_I18N = True
 
 USE_TZ = True
 
-STATIC_ROOT = 'var/static'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
+
 STATIC_URL = 'static/'
 STATICFILES_DIRS = [
     BASE_DIR / "app/static"
