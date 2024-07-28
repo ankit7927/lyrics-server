@@ -50,7 +50,7 @@ def create_song(request:HttpRequest):
         lyrics = song_data["lyrics"],
         ytvid = song_data["ytvid"],
         slug = song_data["slug"], 
-        created = datetime.datetime.fromisoformat(song_data["publish"]),
+        created = song_data["publish"],
         album = alb)
 
     if song_data["thumbnail"] == "":
