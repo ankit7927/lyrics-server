@@ -11,7 +11,7 @@ import datetime
 def home_feed(request:HttpRequest):
     popular_songs = SongModel.objects.all().order_by("created")[:7]
     latest_songs = SongModel.objects.all().order_by("created")[7:21]
-    collections = CollectionModel.objects.all().order_by("created")[:4]
+    collections = CollectionModel.objects.all()[:4]
 
     response = {
         "popular": SongBasicSerializer(instance=popular_songs, many=True).data,
