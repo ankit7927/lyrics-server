@@ -4,3 +4,4 @@ var
 enviroment
 __pycache__
 migrations
+static
