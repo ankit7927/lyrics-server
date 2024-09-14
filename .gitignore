@@ -5,3 +5,4 @@ enviroment
 __pycache__
 migrations
 static
+volume
