@@ -1,5 +1,5 @@
 services:
-  web:
+  server:
     build:
       dockerfile: dockerfile
     container_name: rockers-django
@@ -11,16 +11,15 @@ services:
     env_file:
       - .env
     depends_on:
-      - sqldb
+      - database
 
-  sqldb:
+  database:
     image: mysql:9.0
     container_name: rockers-db
 
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
       MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USERNAME}
       MYSQL_PASSWORD: ${DB_PASSWORD}
 
     ports:
