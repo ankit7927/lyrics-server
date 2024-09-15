@@ -3,7 +3,7 @@ services:
     build:
       dockerfile: dockerfile
     container_name: rockers-django
-    command: python manage.py runserver 0.0.0.0:8000
+    command: gunicorn core.wsgi:application --bind=0.0.0.0:8000
     volumes:
       - .:/app
     ports:
