@@ -1,13 +1,16 @@
 from pathlib import Path
+from dotenv import load_dotenv
 import os
+
+load_dotenv()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 
-SECRET_KEY = os.environ.get("SECRET_KEY")
+SECRET_KEY = os.getenv("SECRET_KEY")
 
-DEBUG = os.environ.get("DEBUG") == "True"
+DEBUG = os.getenv("DEBUG") == "True"
 
-ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS").split(" ")
+ALLOWED_HOSTS = os.getenv("ALLOWED_HOSTS").split(" ")
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -53,12 +56,12 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': os.environ.get("DB_ENGINE", "django.db.backends.sqlite3"),
-        'NAME': os.environ.get("DB_NAME", BASE_DIR / "db.sqlite3"),
-        'USER': os.environ.get("DB_USERNAME", "root"),
-        'PASSWORD': os.environ.get("DB_PASSWORD", "root"), 
-        'HOST': os.environ.get("DB_HOST", "localhost"),
-        'PORT': os.environ.get("DB_PORT", 3306)
+        'ENGINE': os.getenv("DB_ENGINE", "django.db.backends.sqlite3"),
+        'NAME': os.getenv("DB_NAME", BASE_DIR / "db.sqlite3"),
+        'USER': os.getenv("DB_USERNAME", "root"),
+        'PASSWORD': os.getenv("DB_PASSWORD", "root"), 
+        'HOST': os.getenv("DB_HOST", "localhost"),
+        'PORT': os.getenv("DB_PORT", 3306)
     }
 }
 
