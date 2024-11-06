@@ -3,7 +3,7 @@ name: Deploy rockers to aws
 on:
   push:
     branches:
-      - main
+      - master
 
 jobs:
   build:
