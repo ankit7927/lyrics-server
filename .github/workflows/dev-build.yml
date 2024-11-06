@@ -1,0 +1,42 @@
+name: Deploy rockers to aws
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout to source code
+        uses: actions/checkout@v4
+
+      - name: login to docker hub
+        run: docker login -u ${{secrets.DOCKER_USERNAME}} -p ${{secrets.DOCKER_PASSWORD}}
+
+      - name: build the image
+        run: docker compose -f docker-compose.yml build
+
+      - name: tag the image
+        run: docker image tag rockers-django ankit8424/rockers-django:latest
+
+      - name: push image to docker hub
+        run: docker push ankit8424/rockers-django:latest
+
+  deploy:
+    needs: build
+    runs-on: self-hosted
+    steps:
+      - name: check which dir is this
+        run: pwd
+
+      - name: go to rockers
+        run: cd /home/ubuntu/rockers
+
+      - name: down all the services
+        run: docker compose -f docker-compose.yml down
+      
+      - name: pull docker services
+        run: docker compose -f docker-compose.yml up -d --build
+
